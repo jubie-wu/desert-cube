@@ -134,7 +134,7 @@ const App: React.FC = () => {
   const openLine = () => window.open(LINKS.LINE, '_blank');
   const openAnalysis = () => window.open('https://jubiewu.com/analysis/', '_blank');
 
-  // 莫蘭迪沙漠色漸層類名 - 移除邊框以解決深色漏光問題
+  // 莫蘭迪沙漠色漸層類名
   const morandiGradientClass = "bg-gradient-to-r from-[#D4B982] via-[#A67C52] to-[#7A5C41]";
   const commonBtnClass = `flex items-center justify-center gap-2 px-8 py-4 ${morandiGradientClass} text-white font-bold rounded-full transition-all shadow-lg hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] text-sm tracking-widest border-none outline-none focus:outline-none focus:ring-0`;
 
@@ -232,25 +232,25 @@ const App: React.FC = () => {
                 <h2 className="text-3xl md:text-4xl font-bold text-[#2D2A26]">你的潛意識沙漠地圖</h2>
               </div>
 
-              {/* 極致優雅美化的精靈指引小卡 (恢復中文標題) */}
-              <div className="mb-10 p-10 md:p-14 rounded-[3rem] bg-gradient-to-br from-[#FDFCFB] via-[#F6F1E6] to-[#EBE2D0] border border-[#C5A059]/20 shadow-inner relative overflow-hidden group text-center">
+              {/* 指引小卡 */}
+              <div className="mb-14 p-6 md:py-10 md:px-12 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-[#FDFCFB] via-[#F6F1E6] to-[#EBE2D0] border border-[#C5A059]/20 shadow-inner relative overflow-hidden group text-center">
                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.1] transition-opacity duration-1000">
                   <Sparkles size={120} className="text-[#7A5C41]" />
                 </div>
                 
                 <div className="relative z-10 flex flex-col items-center">
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#A67C52]/40" />
-                    <span className="text-sm md:text-lg font-bold tracking-[0.3em] text-[#7A5C41]/90 font-elegant">
+                  <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8">
+                    <div className="hidden sm:block h-px w-8 md:w-10 bg-gradient-to-r from-transparent to-[#A67C52]/40" />
+                    <span className="text-base md:text-lg font-bold tracking-[0.2em] md:tracking-[0.3em] text-[#7A5C41]/90 font-elegant whitespace-nowrap">
                       2026 沙漠精靈的指引
                     </span>
-                    <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#A67C52]/40" />
+                    <div className="hidden sm:block h-px w-8 md:w-10 bg-gradient-to-l from-transparent to-[#A67C52]/40" />
                   </div>
 
                   <div className="relative max-w-2xl w-full">
-                    <Quote className="absolute -top-10 -left-10 text-[#A67C52]/5 rotate-180" size={80} />
-                    <div className="pl-8 border-l-[1px] border-[#A67C52]/30 text-left">
-                      <p className="text-[#4A3728] leading-[2.6] text-xl md:text-2xl font-elegant font-light letter-spacing-vibe text-justify">
+                    <Quote className="absolute -top-6 -left-6 md:-top-8 md:-left-8 text-[#A67C52]/5 rotate-180" size={60} />
+                    <div className="pl-6 md:pl-8 border-l-[1px] border-[#A67C52]/30 text-left">
+                      <p className="text-[#4A3728] leading-[1.8] md:leading-[2.2] text-lg md:text-2xl font-elegant font-light letter-spacing-vibe text-justify">
                         {guidance}
                       </p>
                     </div>
@@ -258,11 +258,31 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-6 mb-12">
+              {/* 五大維度解析：移除粗線條，改用更輕盈的裝飾 */}
+              <div className="space-y-10 mb-16">
                 {QUIZ_DATA.map((question, idx) => (
-                  <div key={question.id} className="p-6 bg-white/30 rounded-2xl border border-white/40 shadow-sm">
-                    <div className="flex items-center gap-3 mb-2"><div className="w-1.5 h-1.5 rounded-full bg-[#A67C52]" /><h4 className="text-sm font-bold text-[#8B4513] uppercase tracking-widest">{question.category}</h4></div>
-                    <p className="text-[#2D2A26] leading-relaxed text-lg">{answers[idx]?.analysis}</p>
+                  <div 
+                    key={question.id} 
+                    className="group p-8 md:p-12 bg-white/60 backdrop-blur-sm rounded-[2rem] border border-[#A67C52]/10 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-[#D4B982] to-transparent opacity-40" />
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full border border-[#A67C52]/30 flex items-center justify-center text-[#A67C52] font-serif-en text-xl italic shadow-sm">
+                          {question.id}
+                        </div>
+                        <h4 className="text-2xl md:text-3xl font-bold text-[#8B4513] font-elegant tracking-wide">
+                          {question.category.split(' ')[0]} 
+                          <span className="text-base md:text-lg opacity-60 ml-3 font-serif tracking-widest uppercase">
+                            {question.category.split(' ')[1]}
+                          </span>
+                        </h4>
+                      </div>
+                      <div className="h-px flex-1 bg-gradient-to-r from-[#A67C52]/10 via-[#A67C52]/5 to-transparent mx-4 hidden md:block" />
+                    </div>
+                    <p className="text-[#2D2A26] leading-[1.8] md:leading-[2] text-xl md:text-2xl font-light text-justify md:text-left drop-shadow-sm">
+                      {answers[idx]?.analysis}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -293,15 +313,16 @@ const App: React.FC = () => {
                 </button>
               </motion.div>
 
+              {/* 按鈕區域 */}
               <div className="action-buttons flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button onClick={resetQuiz} className={commonBtnClass}>
+                  <button onClick={resetQuiz} className={`${commonBtnClass} flex-1 sm:flex-none`}>
                     <RefreshCw size={18} />重新測驗
                   </button>
                   <button 
                     disabled={isDownloading} 
                     onClick={handleDownload} 
-                    className={`${commonBtnClass} ${isDownloading ? 'opacity-70' : ''}`}
+                    className={`${commonBtnClass} flex-1 sm:flex-none ${isDownloading ? 'opacity-70' : ''}`}
                   >
                     {isDownloading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}
                     {isDownloading ? '製作圖片中...' : '下載結果圖片'}
@@ -309,7 +330,7 @@ const App: React.FC = () => {
                 </div>
                 <button 
                   onClick={openAnalysis} 
-                  className={`${commonBtnClass} w-full mt-4`}
+                  className={`${commonBtnClass} w-full`}
                 >
                   <Calendar size={20} />預約「深度內在繪畫解析」
                 </button>
@@ -324,7 +345,7 @@ const App: React.FC = () => {
         &copy; 2026 Jubie 居筆內在繪畫解讀工作室
       </footer>
 
-      {/* Hidden Download Template (同步恢復中文標題) */}
+      {/* 下載範本同步優化 */}
       <div className="absolute top-[-9999px] left-[-9999px]">
         <div ref={downloadCardRef} style={{ width: '800px' }} className="bg-[#FDFCFB] p-20 flex flex-col items-center relative">
           <div className="absolute inset-8 border border-[#C5A059]/20" />
@@ -336,7 +357,7 @@ const App: React.FC = () => {
           <div className="w-full mb-14 p-16 rounded-[3rem] bg-gradient-to-br from-[#FDFCFB] via-[#F6F1E6] to-[#EBE2D0] border border-[#C5A059]/20 relative shadow-sm text-center">
             <div className="flex items-center justify-center gap-4 mb-10 text-[#7A5C41]">
               <div className="h-px w-12 bg-[#A67C52]/30" />
-              <span className="text-2xl font-bold tracking-[0.4em] font-elegant">2026 沙漠精靈的指引</span>
+              <span className="text-2xl font-bold tracking-[0.4em] font-elegant whitespace-nowrap">2026 沙漠精靈的指引</span>
               <div className="h-px w-12 bg-[#A67C52]/30" />
             </div>
             <div className="pl-10 border-l-[2px] border-[#A67C52]/20 text-left">
@@ -346,9 +367,12 @@ const App: React.FC = () => {
 
           <div className="w-full space-y-12 mb-16">
             {QUIZ_DATA.map((question, idx) => (
-              <div key={question.id} className="border-l-2 border-[#A67C52]/30 pl-10">
-                <h4 className="text-sm font-bold text-[#A67C52] uppercase tracking-[0.4em] mb-4">{question.category}</h4>
-                <p className="text-[#2D2A26] text-xl leading-relaxed">{answers[idx]?.analysis}</p>
+              <div key={question.id} className="border border-[#A67C52]/20 pl-10 bg-white p-10 rounded-3xl relative">
+                <div className="absolute top-0 left-0 w-2 h-full bg-[#A67C52]/10" />
+                <h4 className="text-2xl font-bold text-[#A67C52] font-elegant tracking-wide mb-6">
+                  {question.category}
+                </h4>
+                <p className="text-[#2D2A26] text-2xl leading-[1.8]">{answers[idx]?.analysis}</p>
               </div>
             ))}
           </div>
