@@ -9,6 +9,11 @@ export const COLORS = {
   pearl: '#F0EAD6'
 };
 
+export const LINKS = {
+  LINE: 'https://lin.ee/veQopyH', // 更新為實際提供的 LINE 好友連結
+  QR_CODE: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://lin.ee/veQopyH' // 同步更新 QR Code 內容
+};
+
 export const QUIZ_DATA: Question[] = [
   {
     id: 1,

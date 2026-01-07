@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, RefreshCw, ChevronRight, ChevronLeft, Box, Loader2, Sparkles, Calendar } from 'lucide-react';
+import { Download, RefreshCw, ChevronRight, ChevronLeft, Box, Loader2, Sparkles, Calendar, MessageCircle, Quote } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { AppPhase, Option } from './types';
-import { QUIZ_DATA, COLORS } from './constants';
+import { QUIZ_DATA, COLORS, LINKS } from './constants';
 
 const App: React.FC = () => {
   const [phase, setPhase] = useState<AppPhase>('HOME');
@@ -68,7 +68,7 @@ const App: React.FC = () => {
 
     const blessings = {
       A: "那些遙遠的風暴不足為懼，因為你早已看清地平線的方向。願你在 2026 年，執筆畫下內在最真切的寧靜。",
-      B: "輕微的波折只不過是生命賦予你的淬鍊，你比想像中更具韌性。願你繼續保持對世界的好奇，探索未知的解讀。",
+      B: "輕微的波折只不過與生命賦予你的淬鍊，你比想像中更具韌性。願你繼續保持對世界的好奇，探索未知的解讀。",
       C: "在壓力的核心，你將學會與風暴共舞。這是一次靈魂的洗禮，祝福你在洗禮後迎來最閃耀的重生。",
       D: "陽光已經灑向你的沙漠，陰影正在退去。2026 年是屬於你的豐收季，請大膽地向內在深處探索，那裡有更多未竟的美麗。"
     };
@@ -114,14 +114,13 @@ const App: React.FC = () => {
     if (downloadCardRef.current === null) return;
     setIsDownloading(true);
     try {
-      // 使用專屬的下載模板進行輸出
       const dataUrl = await toPng(downloadCardRef.current, {
         cacheBust: true,
         backgroundColor: '#FDFCFB',
-        pixelRatio: 2, // 提高圖片解析度
+        pixelRatio: 2,
       });
       const link = document.createElement('a');
-      link.download = `DesertCube_Result_2026.png`;
+      link.download = `Jubie_DesertCube_2026.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -132,13 +131,15 @@ const App: React.FC = () => {
     }
   };
 
-  const openAnalysis = () => {
-    window.open('https://jubiewu.com/analysis/', '_blank');
-  };
+  const openLine = () => window.open(LINKS.LINE, '_blank');
+  const openAnalysis = () => window.open('https://jubiewu.com/analysis/', '_blank');
+
+  // 莫蘭迪沙漠色漸層類名 - 移除邊框以解決深色漏光問題
+  const morandiGradientClass = "bg-gradient-to-r from-[#D4B982] via-[#A67C52] to-[#7A5C41]";
+  const commonBtnClass = `flex items-center justify-center gap-2 px-8 py-4 ${morandiGradientClass} text-white font-bold rounded-full transition-all shadow-lg hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] text-sm tracking-widest border-none outline-none focus:outline-none focus:ring-0`;
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#FDFCFB]">
-      {/* Background Layer */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-opacity duration-1000"
         style={{ 
@@ -167,47 +168,25 @@ const App: React.FC = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full max-w-2xl bg-white/30 backdrop-blur-xl border border-white/40 p-10 md:p-16 rounded-3xl shadow-2xl text-center flex flex-col items-center"
             >
-              <motion.div
-                animate={{ rotateY: [0, 360] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="mb-8"
-              >
+              <motion.div animate={{ rotateY: [0, 360] }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} className="mb-8">
                 <Box size={64} color={COLORS.gold} strokeWidth={1} />
               </motion.div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#2D2A26] tracking-widest leading-tight">
-                沙漠立方體<br/>
-                <span className="text-2xl md:text-3xl font-light tracking-normal opacity-80">潛意識投射測驗</span>
-              </h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#2D2A26] tracking-widest leading-tight">沙漠立方體<br/><span className="text-2xl md:text-3xl font-light tracking-normal opacity-80">潛意識投射測驗</span></h1>
               <p className="text-lg text-[#8B4513] leading-relaxed mb-10 text-justify md:text-center max-w-lg">
-                這是一個跨越時空、流傳已久的心理測驗。請放鬆你的呼吸，閉上雙眼，想像自己正處於一片無邊無際的沙漠中。這裡只有天、地、沙和你。感受一下這個沙漠的空氣、溫度...
-                接下來我們將一起，在那裡建構屬於你的真實世界。
+                這是一個跨越時空、流傳已久的心理測驗。請放鬆你的呼吸，閉上雙眼，想像自己正處於一片無邊無際的沙漠中。這裡只有天、地、沙和你。
               </p>
-              <button
-                onClick={handleStart}
-                className="group relative px-12 py-4 bg-[#C5A059] text-[#2D2A26] font-bold rounded-full overflow-hidden transition-all hover:bg-[#8B4513] hover:text-white flex items-center gap-2 shadow-xl hover:shadow-2xl"
-              >
-                走進沙漠
-                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              <button onClick={handleStart} className={`group relative px-12 py-4 ${morandiGradientClass} text-white font-bold rounded-full overflow-hidden transition-all hover:shadow-2xl hover:scale-105 flex items-center gap-2 shadow-xl border-none outline-none focus:outline-none`}>
+                走進沙漠 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <p className="mt-12 text-sm italic opacity-60 text-[#2D2A26]">「唯有在無人的荒野中，我們才能看見自己真實的模樣。」</p>
             </motion.div>
           )}
 
           {phase === 'QUIZ' && (
-            <motion.div
-              key={`quiz-${currentStep}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="w-full max-w-4xl flex flex-col items-center"
-            >
+            <motion.div key={`quiz-${currentStep}`} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full max-w-4xl flex flex-col items-center">
               <div className="w-full max-w-md mb-6 px-4">
-                <button
-                  onClick={handleBack}
-                  className="flex items-center gap-1 text-[#8B4513] opacity-60 hover:opacity-100 transition-opacity text-sm font-medium group"
-                >
-                  <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                  返回{currentStep === 0 ? '首頁' : '上一題'}
+                <button onClick={handleBack} className="flex items-center gap-1 text-[#8B4513] opacity-60 hover:opacity-100 transition-opacity text-sm font-medium group border-none outline-none focus:outline-none">
+                  <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> 返回{currentStep === 0 ? '首頁' : '上一題'}
                 </button>
               </div>
               <div className="mb-8 w-full max-w-md mx-auto px-4">
@@ -225,13 +204,7 @@ const App: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-4">
                 {QUIZ_DATA[currentStep].options.map((option) => (
-                  <motion.button
-                    key={option.id}
-                    whileHover={{ scale: 1.02, y: -4 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleAnswer(option)}
-                    className="group relative h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg border border-white/50 flex flex-col bg-white/10"
-                  >
+                  <motion.button key={option.id} whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} onClick={() => handleAnswer(option)} className="group relative h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg border-none flex flex-col bg-white/10 outline-none focus:outline-none">
                     <div className="absolute inset-0 w-full h-full bg-[#F0EAD6]/50">
                       <img src={option.image} alt={option.text} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                     </div>
@@ -247,19 +220,10 @@ const App: React.FC = () => {
           )}
 
           {phase === 'RESULT' && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="w-full max-w-3xl bg-white/40 backdrop-blur-2xl border border-white/50 p-6 md:p-14 rounded-[3rem] shadow-2xl flex flex-col"
-            >
+            <motion.div key="result" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-3xl bg-white/40 backdrop-blur-2xl border border-white/50 p-6 md:p-14 rounded-[3rem] shadow-2xl flex flex-col">
               <div className="w-full flex justify-start mb-6 md:mb-8">
-                <button
-                  onClick={handleBack}
-                  className="flex items-center gap-1 text-[#8B4513] opacity-60 hover:opacity-100 transition-opacity text-xs uppercase tracking-widest font-bold group"
-                >
-                  <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                  修改最後選擇
+                <button onClick={handleBack} className="flex items-center gap-1 text-[#8B4513] opacity-60 hover:opacity-100 transition-opacity text-xs uppercase tracking-widest font-bold group border-none outline-none focus:outline-none">
+                  <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 修改最後選擇
                 </button>
               </div>
 
@@ -268,44 +232,87 @@ const App: React.FC = () => {
                 <h2 className="text-3xl md:text-4xl font-bold text-[#2D2A26]">你的潛意識沙漠地圖</h2>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mb-10 p-8 rounded-3xl bg-gradient-to-br from-[#F0EAD6]/80 to-[#FDFCFB]/90 border border-[#C5A059]/30 shadow-inner relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 p-4 opacity-20"><Sparkles size={48} className="text-[#C5A059]" /></div>
-                <div className="flex items-center gap-2 mb-6">
-                  <Sparkles size={22} className="text-[#C5A059]" />
-                  <span className="text-xl md:text-2xl font-bold uppercase tracking-[0.2em] text-[#C5A059]">2026 沙漠精靈的指引</span>
+              {/* 極致優雅美化的精靈指引小卡 (恢復中文標題) */}
+              <div className="mb-10 p-10 md:p-14 rounded-[3rem] bg-gradient-to-br from-[#FDFCFB] via-[#F6F1E6] to-[#EBE2D0] border border-[#C5A059]/20 shadow-inner relative overflow-hidden group text-center">
+                <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.1] transition-opacity duration-1000">
+                  <Sparkles size={120} className="text-[#7A5C41]" />
                 </div>
-                <p className="text-[#2D2A26] leading-relaxed italic text-lg font-serif">{guidance}</p>
-              </motion.div>
+                
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#A67C52]/40" />
+                    <span className="text-sm md:text-lg font-bold tracking-[0.3em] text-[#7A5C41]/90 font-elegant">
+                      2026 沙漠精靈的指引
+                    </span>
+                    <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#A67C52]/40" />
+                  </div>
+
+                  <div className="relative max-w-2xl w-full">
+                    <Quote className="absolute -top-10 -left-10 text-[#A67C52]/5 rotate-180" size={80} />
+                    <div className="pl-8 border-l-[1px] border-[#A67C52]/30 text-left">
+                      <p className="text-[#4A3728] leading-[2.6] text-xl md:text-2xl font-elegant font-light letter-spacing-vibe text-justify">
+                        {guidance}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-6 mb-12">
                 {QUIZ_DATA.map((question, idx) => (
-                  <motion.div 
-                    key={question.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + idx * 0.1 }}
-                    className="group p-6 bg-white/30 hover:bg-white/50 rounded-2xl border border-white/40 transition-all duration-500 shadow-sm hover:shadow-md"
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#C5A059]" />
-                      <h4 className="text-sm font-bold text-[#8B4513] uppercase tracking-widest">{question.category}</h4>
-                    </div>
+                  <div key={question.id} className="p-6 bg-white/30 rounded-2xl border border-white/40 shadow-sm">
+                    <div className="flex items-center gap-3 mb-2"><div className="w-1.5 h-1.5 rounded-full bg-[#A67C52]" /><h4 className="text-sm font-bold text-[#8B4513] uppercase tracking-widest">{question.category}</h4></div>
                     <p className="text-[#2D2A26] leading-relaxed text-lg">{answers[idx]?.analysis}</p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
+              {/* LINE 邀請卡片 */}
+              <motion.div 
+                whileHover={{ y: -5 }}
+                className="mb-12 p-10 rounded-[2.5rem] border-2 border-dashed border-[#C5A059]/30 bg-[#FDFCFB]/60 flex flex-col items-center text-center shadow-inner"
+              >
+                <div className="w-14 h-14 bg-[#5E7161] rounded-full flex items-center justify-center text-white mb-6 shadow-xl">
+                  <MessageCircle size={28} />
+                </div>
+                <h4 className="text-2xl font-bold text-[#2D2A26] mb-6 tracking-[0.2em]">靈魂的持續對話</h4>
+                <div className="space-y-4 text-[#8B4513] text-sm leading-[1.8] max-w-lg mb-8">
+                  <p>
+                    居筆內在繪畫工作室相信創作可以顯現人們內在的真實，透過專業的繪畫解讀師，你將會發現潛意識一直想告訴你的訊息。
+                  </p>
+                  <p className="font-bold opacity-90">
+                    我們邀請你加入 Jubie 居筆工作室的 LINE 官方帳號，即可獲取工作坊首次參與優惠券，每月還可以得到最新「內在繪畫主題」。
+                  </p>
+                </div>
+                <button 
+                  onClick={openLine}
+                  style={{ backgroundColor: '#5E7161' }}
+                  className="px-10 py-4 text-white font-bold rounded-full transition-all flex items-center gap-2 shadow-lg hover:shadow-2xl hover:scale-105 border-none outline-none focus:outline-none"
+                >
+                  <MessageCircle size={20} /> 領取專屬優惠與繪畫題目
+                </button>
+              </motion.div>
+
               <div className="action-buttons flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button onClick={resetQuiz} className="flex items-center justify-center gap-2 px-8 py-4 bg-[#2D2A26] text-white rounded-full hover:bg-black transition-all shadow-lg hover:shadow-xl text-sm font-bold"><RefreshCw size={18} />重新測驗</button>
-                  <button disabled={isDownloading} onClick={handleDownload} className={`flex items-center justify-center gap-2 px-8 py-4 bg-[#C5A059] text-[#2D2A26] font-bold rounded-full transition-all shadow-lg hover:shadow-xl text-sm ${isDownloading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#B48F4A]'}`}>{isDownloading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}{isDownloading ? '製作圖片中...' : '下載結果圖片'}</button>
+                  <button onClick={resetQuiz} className={commonBtnClass}>
+                    <RefreshCw size={18} />重新測驗
+                  </button>
+                  <button 
+                    disabled={isDownloading} 
+                    onClick={handleDownload} 
+                    className={`${commonBtnClass} ${isDownloading ? 'opacity-70' : ''}`}
+                  >
+                    {isDownloading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}
+                    {isDownloading ? '製作圖片中...' : '下載結果圖片'}
+                  </button>
                 </div>
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={openAnalysis} className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-gradient-to-r from-[#8B4513] to-[#2D2A26] text-[#F0EAD6] font-bold rounded-2xl transition-all shadow-xl hover:shadow-2xl mt-4 border border-white/10"><Calendar size={20} />預約「深度內在繪畫解析」</motion.button>
+                <button 
+                  onClick={openAnalysis} 
+                  className={`${commonBtnClass} w-full mt-4`}
+                >
+                  <Calendar size={20} />預約「深度內在繪畫解析」
+                </button>
               </div>
               <p className="mt-12 text-center text-sm opacity-60 text-[#2D2A26] font-serif italic">「在無聲的荒漠中，聽見靈魂的迴響。」</p>
             </motion.div>
@@ -317,37 +324,47 @@ const App: React.FC = () => {
         &copy; 2026 Jubie 居筆內在繪畫解讀工作室
       </footer>
 
-      {/* 隱藏的下載專用海報模板 (只有在下載時會被渲染成圖片) */}
+      {/* Hidden Download Template (同步恢復中文標題) */}
       <div className="absolute top-[-9999px] left-[-9999px]">
-        <div ref={downloadCardRef} style={{ width: '800px' }} className="bg-[#FDFCFB] p-16 flex flex-col items-center">
-          {/* 海報裝飾邊框 */}
-          <div className="absolute inset-8 border border-[#C5A059]/20 pointer-events-none" />
-          
+        <div ref={downloadCardRef} style={{ width: '800px' }} className="bg-[#FDFCFB] p-20 flex flex-col items-center relative">
+          <div className="absolute inset-8 border border-[#C5A059]/20" />
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-[#2D2A26] tracking-[0.3em] mb-4">沙漠立方體</h1>
-            <p className="text-sm tracking-[0.5em] text-[#C5A059] opacity-80">2026 潛意識投射測驗結果報告</p>
+            <h1 className="text-4xl font-bold text-[#2D2A26] tracking-[0.4em] mb-4">沙漠立方體</h1>
+            <p className="text-sm tracking-[0.6em] text-[#C5A059] opacity-80 uppercase font-elegant">The Inner Projection 2026</p>
           </div>
-
-          <div className="w-full mb-12 p-10 rounded-3xl bg-gradient-to-br from-[#F0EAD6]/60 to-[#FDFCFB]/80 border border-[#C5A059]/30 relative shadow-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <Sparkles size={24} className="text-[#C5A059]" />
-              <span className="text-2xl font-bold tracking-[0.1em] text-[#C5A059]">2026 沙漠精靈的指引</span>
+          
+          <div className="w-full mb-14 p-16 rounded-[3rem] bg-gradient-to-br from-[#FDFCFB] via-[#F6F1E6] to-[#EBE2D0] border border-[#C5A059]/20 relative shadow-sm text-center">
+            <div className="flex items-center justify-center gap-4 mb-10 text-[#7A5C41]">
+              <div className="h-px w-12 bg-[#A67C52]/30" />
+              <span className="text-2xl font-bold tracking-[0.4em] font-elegant">2026 沙漠精靈的指引</span>
+              <div className="h-px w-12 bg-[#A67C52]/30" />
             </div>
-            <p className="text-[#2D2A26] text-xl font-serif italic leading-[1.8]">{guidance}</p>
+            <div className="pl-10 border-l-[2px] border-[#A67C52]/20 text-left">
+              <p className="text-[#4A3728] text-2xl font-elegant font-light leading-[2.6] letter-spacing-vibe">{guidance}</p>
+            </div>
           </div>
 
-          <div className="w-full space-y-10">
+          <div className="w-full space-y-12 mb-16">
             {QUIZ_DATA.map((question, idx) => (
-              <div key={question.id} className="border-l-2 border-[#C5A059]/30 pl-8">
-                <h4 className="text-xs font-bold text-[#C5A059] uppercase tracking-[0.4em] mb-3">{question.category}</h4>
-                <p className="text-[#2D2A26] text-lg leading-relaxed">{answers[idx]?.analysis}</p>
+              <div key={question.id} className="border-l-2 border-[#A67C52]/30 pl-10">
+                <h4 className="text-sm font-bold text-[#A67C52] uppercase tracking-[0.4em] mb-4">{question.category}</h4>
+                <p className="text-[#2D2A26] text-xl leading-relaxed">{answers[idx]?.analysis}</p>
               </div>
             ))}
           </div>
+          
+          <div style={{ backgroundColor: '#2D2A26' }} className="w-full mt-8 p-12 rounded-[3rem] flex items-center justify-between text-white shadow-2xl">
+            <div className="flex-1 pr-10">
+              <h5 style={{ color: '#D4B982' }} className="text-2xl font-bold mb-3 tracking-widest font-elegant">延續這場靈魂對話</h5>
+              <p className="text-sm opacity-80 leading-relaxed font-serif italic">掃描右側加入 LINE，領取每月最新「內在繪畫主題」與工作坊優惠券。</p>
+            </div>
+            <div className="w-40 h-40 bg-white p-2 rounded-2xl flex items-center justify-center">
+              <img src={LINKS.QR_CODE} alt="QR Code" className="w-full h-full" />
+            </div>
+          </div>
 
-          <div className="mt-24 pt-12 border-t border-[#C5A059]/20 w-full text-center">
-            <p className="text-[#8B4513] text-[10px] tracking-[0.5em] uppercase opacity-60 mb-4">The Inner Drawing Analysis Studio</p>
-            <p className="text-[#2D2A26] text-xs opacity-80 font-serif font-bold">© 2026 Jubie 居筆內在繪畫解讀工作室</p>
+          <div className="mt-20 text-center">
+            <p className="text-[#2D2A26] text-xs opacity-60 font-serif font-bold tracking-[0.4em]">© 2026 Jubie 居筆內在繪畫解讀工作室</p>
           </div>
         </div>
       </div>
